@@ -1,0 +1,29 @@
+# This YAML exposes the fields defined in the UI. It can be edited directly or have new YAML pasted in.
+# Not all available Kubernetes properties are recognized by the form exposed in the UI, and unrecognized properties are ignored during import.
+# If the required properties are not supported by this step, the 'Deploy raw Kubernetes YAML' step can be used to deploy YAML directly to Kubernetes, and supports all properties.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+  namespace: vote
+  labels:
+    app: redis-deployment
+spec:
+  selector:
+    matchLabels:
+      app: redis-deployment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redis-deployment
+    spec:
+      volumes:
+        - name: redis-data
+          emptyDir: {}
+      containers:
+        - image: redis:alpine
+	  name: redis-deployment
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data
